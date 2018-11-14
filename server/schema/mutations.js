@@ -23,7 +23,28 @@ const mutation = new GraphQLObjectType({
         // direkt olarak içindeki değişkenleri kullanacağız. Alttaki satırı ilk satır ile karşılaştırabilirsin.
         return AuthService.signup({ email, password, req})
       }
-    } 
+    },
+    logout: {
+      type: UserType,
+      resolve(parentValue, args, req) {
+        const { user } = req;
+        req.logout();
+        return user;
+      }
+    },
+    // Bu kısımda password.js'den yararlanıldı.
+    //Önce user objesini kaydediyor ve sonra logout oluyor. Bu işlemlerden sonra 
+    // user'ı siliyor.
+    login: {
+      type: UserType,
+      args: {
+        email: { type: GraphQLString },
+        password: { type: GraphQLString }
+      },
+      resolve(parentValue, { email, password }, req) {
+        return AuthService.login({ email, password, req})
+      }
+    }
   }
 });
 

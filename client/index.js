@@ -27,6 +27,7 @@ const Root = () => {
         
         <Route path="/" component={App}>
           <Route path="login" component={LoginForm} />
+          <Route path="signup" component={SignupForm} />
         </Route>
 
       </Router>

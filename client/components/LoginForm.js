@@ -4,6 +4,7 @@ import AuthForm from './AuthForm';
 import mutation from '../mutations/Login';
 import query from '../queries/CurrentUser';
 import { graphql } from 'react-apollo';
+import { hashHistory } from 'react-router'
 
 class LoginForm extends Component {
 
@@ -12,6 +13,21 @@ class LoginForm extends Component {
 
     this.state = {
       errors: []
+    }
+  }
+
+  componentWillUpdate(nextProps) {
+    // this.props, the old, current set of props
+    // nextProps, the next set of props that will be in place 
+    // when the component rerenders
+
+    console.log("this.props: ",this.props)
+    console.log("nextProps: ", nextProps)
+
+    if (!this.props.data.user && nextProps.data.user) {
+      // bize gelen ilk props'un içinde user yoksa ve yeni props'umuza 
+      // user geldiyse dashboard'a redirect edeceğiz.
+      hashHistory.push('dashboard')
     }
   }
 
@@ -42,4 +58,6 @@ class LoginForm extends Component {
   }
 }
 
-export default graphql(mutation)(LoginForm);
+export default graphql(query)(
+  graphql(mutation)(LoginForm)
+);
